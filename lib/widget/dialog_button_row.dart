@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-
-import '../shared/theme/color_theme.dart';
 import 'dialog_button.dart';
 
 class DialogButtonRow extends StatelessWidget {
-  const DialogButtonRow({Key? key}) : super(key: key);
+  final void Function()? onSave;
+  const DialogButtonRow({
+    Key? key,
+    this.onSave,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,16 +18,14 @@ class DialogButtonRow extends StatelessWidget {
             Navigator.pop(context);
           },
           title: "Cancel",
-          titleColor: Colors.white,
-          bgColor: nOrange2,
+          titleColor: Colors.black,
+          bgColor: Colors.white,
         ),
         DialogButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          onPressed: onSave,
           title: "Save",
-          titleColor: nOrange,
-          bgColor: Colors.white,
+          titleColor: Colors.white,
+          bgColor: Colors.black,
         ),
       ],
     );

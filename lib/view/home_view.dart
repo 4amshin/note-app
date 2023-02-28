@@ -14,6 +14,18 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  TextEditingController labelController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+
+  @override
+  void dispose() {
+    labelController.dispose();
+    descriptionController.dispose();
+    super.dispose();
+  }
+
+  Color selectedColor = nBlue;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,17 +38,17 @@ class _HomeViewState extends State<HomeView> {
           vertical: 15,
         ),
         child: GridView.builder(
-          itemCount: 6,
+          itemCount: 5,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             crossAxisSpacing: 15,
             mainAxisSpacing: 15,
           ),
           itemBuilder: (context, index) {
-            return const HmNoteItem(
-              title: 'Coffee',
-              content: 'best to drink when tired and needs',
-              color: nBlue,
+            return HmNoteItem(
+              title: labelController.text,
+              content: descriptionController.text,
+              color: selectedColor,
             );
           },
         ),
@@ -46,8 +58,22 @@ class _HomeViewState extends State<HomeView> {
           showDialog(
             context: context,
             builder: (BuildContext context) {
-              return const HmInputDialog(
+              return HmInputDialog(
                 title: 'Add Note',
+                labelController: labelController,
+                descriptionController: descriptionController,
+                onColorSelected: (Color color) {
+                  selectedColor = color;
+                  print(selectedColor.toString());
+                },
+                onSave: () {
+                  //TODO: ON SAVE--> Input label, description, & color into database
+                  print(labelController.text);
+                  print(descriptionController.text);
+                  print(selectedColor);
+                  Navigator.pop(context);
+                  setState(() {});
+                },
               );
             },
           );

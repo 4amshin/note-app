@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class BottomNavBar extends StatelessWidget {
-  final int selectedIndex;
-  final void Function(int) onItemSelected;
+  final int? selectedIndex;
+  final void Function(int)? onItemSelected;
   const BottomNavBar({
     Key? key,
     required this.selectedIndex,
@@ -16,15 +16,16 @@ class BottomNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return FlashyTabBar(
       // backgroundColor: Colors.black,
-      selectedIndex: selectedIndex,
+      selectedIndex: selectedIndex!,
       showElevation: true,
-      onItemSelected: onItemSelected,
+      onItemSelected: onItemSelected!,
       items: [
         FlashyTabBarItem(
+          activeColor: Colors.black,
           icon: SvgPicture.asset(
             'assets/icons/add_outline.svg',
-            height: 20,
-            color: Colors.black,
+            height: selectedIndex == 0 ? 20 : 18,
+            color: selectedIndex == 0 ? Colors.black : Colors.grey,
           ),
           title: const Text(
             "Home",
@@ -34,10 +35,11 @@ class BottomNavBar extends StatelessWidget {
           ),
         ),
         FlashyTabBarItem(
+          activeColor: Colors.black,
           icon: SvgPicture.asset(
             'assets/icons/search.svg',
-            height: 20,
-            color: Colors.black,
+            height: selectedIndex == 1 ? 20 : 15,
+            color: selectedIndex == 1 ? Colors.black : Colors.grey,
           ),
           title: const Text(
             "Search",

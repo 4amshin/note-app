@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import '../shared/theme/color_theme.dart';
 
 class HmTextField extends StatelessWidget {
+  final TextEditingController? controller;
   final double? height;
   final String? label;
   const HmTextField({
     Key? key,
     this.height,
     this.label,
+    this.controller,
   }) : super(key: key);
 
   @override
@@ -22,11 +24,12 @@ class HmTextField extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       child: TextFormField(
+        controller: controller,
         decoration: InputDecoration(
           hintText: label ?? 'Label',
-          hintStyle: TextStyle(
+          hintStyle: const TextStyle(
             fontSize: 15,
-            color: nOrange.withOpacity(0.7),
+            color: Colors.black54,
           ),
           border: InputBorder.none,
         ),
