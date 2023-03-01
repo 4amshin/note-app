@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:note_app/model/note_model.dart';
+import 'package:note_app/view/update_view.dart';
 
 import 'show_dialog.dart';
 
@@ -7,27 +9,20 @@ class HmNoteItem extends StatelessWidget {
   final String? content;
   final String? time;
   final Color? color;
+  final void Function()? onTap;
   const HmNoteItem({
     Key? key,
     this.title,
     this.content,
     this.time,
     this.color,
+    this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return const HmInputDialog(
-              title: 'Edit Note',
-            );
-          },
-        );
-      },
+      onTap: onTap,
       child: Container(
         height: 100.0,
         width: 100,
@@ -43,6 +38,8 @@ class HmNoteItem extends StatelessWidget {
         ),
         child: ListTile(
           title: Text(
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             title ?? "Title",
             style: const TextStyle(
               fontSize: 15.0,

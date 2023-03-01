@@ -4,10 +4,10 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:note_app/database/db_helper.dart';
 import 'package:note_app/model/note_model.dart';
 import 'package:note_app/view/input_view.dart';
+import 'package:note_app/view/update_view.dart';
 import 'package:note_app/widget/hm_app_bar.dart';
 import 'package:intl/intl.dart';
 
-import '../shared/theme/color_theme.dart';
 import '../widget/hm_add_button.dart';
 import '../widget/hm_note_item.dart';
 
@@ -81,6 +81,17 @@ class _HomeViewState extends State<HomeView> {
                           final data = snapshot.data![index];
 
                           return HmNoteItem(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      UpdateView(noteModel: data),
+                                ),
+                              ).then((value) {
+                                setState(() {});
+                              });
+                            },
                             title: data.title,
                             content: data.content,
                             time: DateFormat('EEEE, HH:mm')
