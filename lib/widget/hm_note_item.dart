@@ -51,17 +51,21 @@ class HmNoteItem extends StatelessWidget {
             ),
           ),
           subtitle: Padding(
-            padding: const EdgeInsets.only(bottom: 33),
+            padding: const EdgeInsets.only(bottom: 33, top: 5),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  content ?? "Description",
-                  style: TextStyle(
-                    height: 1.1,
-                    color: Colors.white.withOpacity(0.9),
-                    fontSize: 14,
+                Expanded(
+                  child: Text(
+                    maxLines: 4,
+                    overflow: TextOverflow.ellipsis,
+                    content ?? "Description",
+                    style: TextStyle(
+                      height: 1.1,
+                      color: Colors.white.withOpacity(0.9),
+                      fontSize: 14,
+                    ),
                   ),
                 ),
                 Container(
