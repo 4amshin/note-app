@@ -15,26 +15,38 @@ class HmTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: height ?? 50,
-      padding: const EdgeInsets.all(12),
-      margin: const EdgeInsets.symmetric(),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: TextFormField(
-        controller: controller,
-        decoration: InputDecoration(
-          hintText: label ?? 'Label',
-          hintStyle: const TextStyle(
-            fontSize: 15,
-            color: Colors.black54,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 5),
+          child: Text(
+            label ?? "Lable",
+            style: const TextStyle(
+              fontSize: 15.0,
+              color: Colors.black87,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-          border: InputBorder.none,
         ),
-        onChanged: (value) {},
-      ),
+        const SizedBox(height: 5),
+        Container(
+          height: height ?? 50,
+          padding: const EdgeInsets.all(12),
+          margin: const EdgeInsets.symmetric(),
+          decoration: BoxDecoration(
+            color: Colors.blueGrey.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: TextFormField(
+            controller: controller,
+            decoration: const InputDecoration(
+              border: InputBorder.none,
+            ),
+            onChanged: (value) {},
+          ),
+        ),
+      ],
     );
   }
 }

@@ -2,16 +2,29 @@
 import 'package:flutter/material.dart';
 
 class NoteModel {
+  final int? id;
   final String? title;
   final String? content;
   final String? createdAt;
   final String? updatedAt;
-  final Color? backgroundColor;
+  final String? color;
   NoteModel({
+    this.id,
     this.title,
     this.content,
     this.createdAt,
     this.updatedAt,
-    this.backgroundColor,
+    this.color,
   });
+
+  factory NoteModel.fromJson(Map<String, dynamic> json) {
+    return NoteModel(
+      id: json["id"],
+      title: json["title"],
+      content: json["content"],
+      color: json["color"],
+      createdAt: json["createdAt"],
+      updatedAt: json["updatedAt"],
+    );
+  }
 }

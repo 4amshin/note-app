@@ -37,9 +37,11 @@ dependencies:
   cupertino_icons: ^1.0.2
   sqflite: ^2.2.5
   google_fonts: ^4.0.3
+  loading_animation_widget: ^1.2.0+4
   flutter_svg: ^2.0.2
   flutter_slidable: ^2.0.0
   flashy_tab_bar2: ^0.0.6
+  intl: ^0.18.0
 
 dev_dependencies:
   flutter_test:

@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:note_app/database/db_helper.dart';
+import 'package:note_app/model/note_model.dart';
+import 'package:note_app/view/input_view.dart';
 import 'package:note_app/widget/hm_app_bar.dart';
-import 'package:note_app/widget/show_dialog.dart';
+import 'package:intl/intl.dart';
 
 import '../shared/theme/color_theme.dart';
 import '../widget/hm_add_button.dart';
@@ -14,17 +19,28 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  TextEditingController labelController = TextEditingController();
-  TextEditingController descriptionController = TextEditingController();
+  DatabaseHelper? dbInstance;
 
-  @override
-  void dispose() {
-    labelController.dispose();
-    descriptionController.dispose();
-    super.dispose();
+  Future doRefresh() async {
+    setState(() {});
   }
 
-  Color selectedColor = nBlue;
+  Future initDatabase() async {
+    await dbInstance!.database();
+    setState(() {});
+  }
+
+  Future delete(int id) async {
+    await dbInstance!.deleteData(id);
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    dbInstance = DatabaseHelper();
+    initDatabase();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,51 +48,76 @@ class _HomeViewState extends State<HomeView> {
       appBar: AppBar(
         flexibleSpace: const HmAppBar(),
       ),
-      body: SafeArea(
-        minimum: const EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 15,
-        ),
-        child: GridView.builder(
-          itemCount: 5,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 15,
-            mainAxisSpacing: 15,
-          ),
-          itemBuilder: (context, index) {
-            return HmNoteItem(
-              title: labelController.text,
-              content: descriptionController.text,
-              color: selectedColor,
-            );
-          },
-        ),
+      body: RefreshIndicator(
+        onRefresh: doRefresh,
+        color: Colors.indigo,
+        child: dbInstance != null
+            ? FutureBuilder<List<NoteModel>>(
+                future: dbInstance!.displayDb(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    if (snapshot.data!.isEmpty) {
+                      return Center(
+                        child: SvgPicture.asset(
+                          'assets/images/no_data.svg',
+                          width: 200,
+                        ),
+                      );
+                    }
+                    return SafeArea(
+                      minimum: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 15,
+                      ),
+                      child: GridView.builder(
+                        itemCount: snapshot.data!.length,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 15,
+                          mainAxisSpacing: 15,
+                        ),
+                        itemBuilder: (context, index) {
+                          final data = snapshot.data![index];
+
+                          return HmNoteItem(
+                            title: data.title,
+                            content: data.content,
+                            time: DateFormat('EEEE, HH:mm')
+                                .format(DateTime.parse(data.createdAt!)),
+                            color: Color(int.parse(data.color!, radix: 16)),
+                            // time: data.createdAt,
+                          );
+                        },
+                      ),
+                    );
+                  } else {
+                    return Center(
+                      child: LoadingAnimationWidget.inkDrop(
+                        color: Colors.indigo,
+                        size: 35,
+                      ),
+                    );
+                  }
+                },
+              )
+            : Center(
+                child: LoadingAnimationWidget.inkDrop(
+                  color: Colors.indigo,
+                  size: 35,
+                ),
+              ),
       ),
       floatingActionButton: HmAddButton(
         onPressed: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return HmInputDialog(
-                title: 'Add Note',
-                labelController: labelController,
-                descriptionController: descriptionController,
-                onColorSelected: (Color color) {
-                  selectedColor = color;
-                  print(selectedColor.toString());
-                },
-                onSave: () {
-                  //TODO: ON SAVE--> Input label, description, & color into database
-                  print(labelController.text);
-                  print(descriptionController.text);
-                  print(selectedColor);
-                  Navigator.pop(context);
-                  setState(() {});
-                },
-              );
-            },
-          );
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const InputView(),
+            ),
+          ).then((value) {
+            setState(() {});
+          });
         },
       ),
     );

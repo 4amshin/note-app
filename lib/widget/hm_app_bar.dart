@@ -10,7 +10,7 @@ class HmAppBar extends StatelessWidget {
       height: 250.0,
       padding: const EdgeInsets.symmetric(
         horizontal: 20,
-        vertical: 10,
+        vertical: 15,
       ),
       // color: Colors.orange,
       child: Row(

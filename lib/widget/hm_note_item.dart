@@ -67,7 +67,7 @@ class HmNoteItem extends StatelessWidget {
                 Container(
                   height: 25,
                   padding: const EdgeInsets.only(
-                    bottom: 3,
+                    bottom: 2,
                   ),
                   decoration: BoxDecoration(
                     border: Border.all(
@@ -80,7 +80,8 @@ class HmNoteItem extends StatelessWidget {
                     child: Text(
                       time ?? "Today, 4:30",
                       style: TextStyle(
-                        fontSize: 14.0,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
                         color: Colors.white.withOpacity(0.8),
                       ),
                     ),

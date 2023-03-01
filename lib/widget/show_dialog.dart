@@ -28,75 +28,90 @@ class _HmInputDialogState extends State<HmInputDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      // height: 300,
-      width: 270,
-      margin: const EdgeInsets.symmetric(
-        vertical: 175,
-      ),
-      child: AlertDialog(
-        backgroundColor: Colors.white,
-        title: Text(
-          widget.title ?? "Card Widget",
-          style: const TextStyle(
-            fontSize: 20.0,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-          ),
-        ),
-        content: Column(
-          children: [
-            HmTextField(
-              height: 50,
-              label: 'Label',
-              controller: widget.labelController,
-            ),
-            const SizedBox(height: 15),
-            HmTextField(
-              height: 100,
-              label: 'Description',
-              controller: widget.descriptionController,
-            ),
-            const SizedBox(height: 15),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                for (final color in [nBlue, nOrange, nCyan, nPink, nPink2])
-                  GestureDetector(
-                    onTap: () {
-                      if (widget.onColorSelected != null) {
-                        widget.onColorSelected!(color);
-                        _selectedColor = color;
-                        setState(() {});
-                      }
-                    },
-                    child: Container(
-                      width: 30,
-                      height: 30,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: color,
-                        border: Border.all(
-                          color: Colors.white,
-                          width: 2,
-                        ),
-                      ),
-                      child: _selectedColor == color
-                          ? const Icon(
-                              Icons.check,
-                              size: 15,
-                              color: Colors.white,
-                            )
-                          : null,
-                    ),
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(
+            child: Container(
+              height: 400,
+              width: 400,
+              margin: const EdgeInsets.symmetric(
+                  // vertical: 160,
                   ),
-              ],
+              child: AlertDialog(
+                backgroundColor: Colors.white,
+                title: Text(
+                  widget.title ?? "Card Widget",
+                  style: const TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+                content: Column(
+                  children: [
+                    HmTextField(
+                      height: 50,
+                      label: 'Label',
+                      controller: widget.labelController,
+                    ),
+                    const SizedBox(height: 15),
+                    HmTextField(
+                      height: 70,
+                      label: 'Description',
+                      controller: widget.descriptionController,
+                    ),
+                    const SizedBox(height: 15),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        for (final color in [
+                          nBlue,
+                          nOrange,
+                          nCyan,
+                          nPink,
+                          nPink2
+                        ])
+                          GestureDetector(
+                            onTap: () {
+                              if (widget.onColorSelected != null) {
+                                widget.onColorSelected!(color);
+                                _selectedColor = color;
+                                setState(() {});
+                              }
+                            },
+                            child: Container(
+                              width: 30,
+                              height: 30,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: color,
+                                border: Border.all(
+                                  color: Colors.white,
+                                  width: 2,
+                                ),
+                              ),
+                              child: _selectedColor == color
+                                  ? const Icon(
+                                      Icons.check,
+                                      size: 15,
+                                      color: Colors.white,
+                                    )
+                                  : null,
+                            ),
+                          ),
+                      ],
+                    ),
+                  ],
+                ),
+                actions: [
+                  DialogButtonRow(
+                    onSave: widget.onSave,
+                  ),
+                ],
+              ),
             ),
-          ],
-        ),
-        actions: [
-          DialogButtonRow(
-            onSave: widget.onSave,
           ),
         ],
       ),
