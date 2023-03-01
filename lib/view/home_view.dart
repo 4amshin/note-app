@@ -67,7 +67,7 @@ class _HomeViewState extends State<HomeView> {
                     return SafeArea(
                       minimum: const EdgeInsets.symmetric(
                         horizontal: 20,
-                        vertical: 15,
+                        // vertical: 2,
                       ),
                       child: GridView.builder(
                         itemCount: snapshot.data!.length,

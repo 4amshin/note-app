@@ -7,47 +7,53 @@ class HmAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      color: Colors.white,
       height: 250.0,
       padding: const EdgeInsets.symmetric(
         horizontal: 20,
         vertical: 15,
       ),
-      // color: Colors.orange,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const AppDetailView(),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AppDetailView(),
+                    ),
+                  );
+                },
+                child: const Text(
+                  "My Note",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              );
-            },
-            child: const Text(
-              "My Note",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
               ),
-            ),
-          ),
-          Container(
-            height: 35,
-            width: 35,
-            decoration: const BoxDecoration(
-              color: Colors.amberAccent,
-              image: DecorationImage(
-                image: AssetImage(
-                  'assets/images/profile.png',
+              Container(
+                height: 35,
+                width: 35,
+                decoration: const BoxDecoration(
+                  color: Colors.amberAccent,
+                  image: DecorationImage(
+                    image: AssetImage(
+                      'assets/images/profile.png',
+                    ),
+                    fit: BoxFit.fitWidth,
+                  ),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10),
+                  ),
                 ),
-                fit: BoxFit.fitWidth,
               ),
-              borderRadius: BorderRadius.all(
-                Radius.circular(10),
-              ),
-            ),
+            ],
           ),
         ],
       ),
