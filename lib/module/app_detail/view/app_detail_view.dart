@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:note_app/core.dart';
+import '../controller/app_detail_controller.dart';
 
-class AppDetailView extends StatelessWidget {
+class AppDetailView extends StatefulWidget {
   const AppDetailView({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
+  Widget build(context, AppDetailController controller) {
+    controller.view = this;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Description View"),
+        title: const Text("AppDetail"),
         actions: const [],
       ),
       body: SingleChildScrollView(
@@ -20,4 +23,7 @@ class AppDetailView extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  State<AppDetailView> createState() => AppDetailController();
 }

@@ -1,59 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:note_app/core.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:note_app/database/db_helper.dart';
-import 'package:note_app/model/note_model.dart';
-import 'package:note_app/view/input_view.dart';
-import 'package:note_app/view/update_view.dart';
-import 'package:note_app/widget/hm_app_bar.dart';
-import 'package:intl/intl.dart';
-
-import '../widget/hm_add_button.dart';
-import '../widget/hm_note_item.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
 
-  @override
-  State<HomeView> createState() => _HomeViewState();
-}
+  Widget build(context, HomeController controller) {
+    controller.view = this;
 
-class _HomeViewState extends State<HomeView> {
-  DatabaseHelper? dbInstance;
-
-  Future doRefresh() async {
-    setState(() {});
-  }
-
-  Future initDatabase() async {
-    await dbInstance!.database();
-    setState(() {});
-  }
-
-  Future delete(int id) async {
-    await dbInstance!.deleteData(id);
-    setState(() {});
-  }
-
-  @override
-  void initState() {
-    dbInstance = DatabaseHelper();
-    initDatabase();
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         flexibleSpace: const HmAppBar(),
       ),
       body: RefreshIndicator(
-        onRefresh: doRefresh,
+        onRefresh: controller.doRefresh,
         color: Colors.indigo,
-        child: dbInstance != null
+        child: controller.dbInstance != null
             ? FutureBuilder<List<NoteModel>>(
-                future: dbInstance!.displayDb(),
+                future: controller.dbInstance!.displayDb(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     if (snapshot.data!.isEmpty) {
@@ -81,25 +46,12 @@ class _HomeViewState extends State<HomeView> {
                           final data = snapshot.data![index];
 
                           return HmNoteItem(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      UpdateView(noteModel: data),
-                                ),
-                              ).then((value) {
-                                setState(() {});
-                              });
-                            },
-                            onDelete: () {
-                              delete(data.id!);
-                            },
+                            onTap: () => controller.toUpdateView(data),
+                            onDelete: () => controller.doDelete(data.id!),
                             title: data.title,
                             content: data.content,
-                            time: DateFormat('EEEE, HH:mm')
-                                .format(DateTime.parse(data.createdAt!)),
-                            color: Color(int.parse(data.color!, radix: 16)),
+                            time: data.createdAt,
+                            color: data.color,
                             // time: data.createdAt,
                           );
                         },
@@ -123,17 +75,11 @@ class _HomeViewState extends State<HomeView> {
               ),
       ),
       floatingActionButton: HmAddButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const InputView(),
-            ),
-          ).then((value) {
-            setState(() {});
-          });
-        },
+        onPressed: () => controller.toCreateView(),
       ),
     );
   }
+
+  @override
+  State<HomeView> createState() => HomeController();
 }

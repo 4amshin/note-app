@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:note_app/database/db_helper.dart';
-import 'package:note_app/widget/hm_save_button.dart';
-
-import '../model/note_model.dart';
-import '../shared/theme/color_theme.dart';
-import '../widget/hm_text_field.dart';
+import 'package:note_app/core.dart';
+import '../controller/update_controller.dart';
 
 class UpdateView extends StatefulWidget {
   final NoteModel? noteModel;
@@ -13,36 +9,9 @@ class UpdateView extends StatefulWidget {
     this.noteModel,
   }) : super(key: key);
 
-  @override
-  State<UpdateView> createState() => _UpdateViewState();
-}
+  Widget build(context, UpdateController controller) {
+    controller.view = this;
 
-class _UpdateViewState extends State<UpdateView> {
-  DatabaseHelper dbInstance = DatabaseHelper();
-
-  TextEditingController labelController = TextEditingController();
-  TextEditingController descriptionController = TextEditingController();
-
-  Color? _selectedColor;
-
-  @override
-  void initState() {
-    dbInstance.database();
-    labelController.text = widget.noteModel!.title!;
-    descriptionController.text = widget.noteModel!.content!;
-    _selectedColor = Color(int.parse(widget.noteModel!.color!, radix: 16));
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    labelController.dispose();
-    descriptionController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -73,13 +42,13 @@ class _UpdateViewState extends State<UpdateView> {
             HmTextField(
               height: 50,
               label: 'Label',
-              controller: labelController,
+              controller: controller.labelController,
             ),
             const SizedBox(height: 15),
             HmTextField(
               height: 70,
               label: 'Description',
-              controller: descriptionController,
+              controller: controller.descriptionController,
             ),
             const SizedBox(height: 25),
             Row(
@@ -87,10 +56,7 @@ class _UpdateViewState extends State<UpdateView> {
               children: [
                 for (final color in [nBlue, nOrange, nCyan, nPink, nPink2])
                   GestureDetector(
-                    onTap: () {
-                      _selectedColor = color;
-                      setState(() {});
-                    },
+                    onTap: () => controller.getColor(color),
                     child: Container(
                       width: 40,
                       height: 40,
@@ -98,7 +64,7 @@ class _UpdateViewState extends State<UpdateView> {
                         shape: BoxShape.circle,
                         color: color,
                       ),
-                      child: _selectedColor == color
+                      child: controller.selectedColor == color
                           ? const Icon(
                               Icons.check,
                               size: 20,
@@ -111,24 +77,14 @@ class _UpdateViewState extends State<UpdateView> {
             ),
             const SizedBox(height: 30.0),
             HmSaveButton(
-              onPressed: () async {
-                String colorString = _selectedColor != null
-                    ? _selectedColor!.value.toRadixString(16)
-                    : '';
-                await dbInstance.updateData(widget.noteModel!.id!, {
-                  'title': labelController.text,
-                  'content': descriptionController.text,
-                  'color': colorString,
-                  'updatedAt': DateTime.now().toString(),
-                });
-
-                Navigator.pop(context);
-                setState(() {});
-              },
+              onPressed: () => controller.doUpdateData(),
             ),
           ],
         ),
       ),
     );
   }
+
+  @override
+  State<UpdateView> createState() => UpdateController();
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:note_app/view/app_detail_view.dart';
+
+import '../../app_detail/view/app_detail_view.dart';
 
 class HmAppBar extends StatelessWidget {
   const HmAppBar({Key? key}) : super(key: key);
@@ -32,7 +33,7 @@ class HmAppBar extends StatelessWidget {
                 child: const Text(
                   "My Note",
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 25,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

@@ -1,40 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:note_app/database/db_helper.dart';
-import 'package:note_app/widget/hm_save_button.dart';
-
-import '../shared/theme/color_theme.dart';
-import '../widget/hm_text_field.dart';
+import 'package:note_app/core.dart';
+import '../controller/input_controller.dart';
 
 class InputView extends StatefulWidget {
   const InputView({Key? key}) : super(key: key);
 
-  @override
-  State<InputView> createState() => _InputViewState();
-}
+  Widget build(context, InputController controller) {
+    controller.view = this;
 
-class _InputViewState extends State<InputView> {
-  DatabaseHelper dbInstance = DatabaseHelper();
-
-  TextEditingController labelController = TextEditingController();
-  TextEditingController descriptionController = TextEditingController();
-
-  Color? _selectedColor;
-
-  @override
-  void initState() {
-    dbInstance.database();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    labelController.dispose();
-    descriptionController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -65,13 +38,13 @@ class _InputViewState extends State<InputView> {
             HmTextField(
               height: 50,
               label: 'Label',
-              controller: labelController,
+              controller: controller.labelController,
             ),
             const SizedBox(height: 15),
             HmTextField(
               height: 70,
               label: 'Description',
-              controller: descriptionController,
+              controller: controller.descriptionController,
             ),
             const SizedBox(height: 25),
             Row(
@@ -79,10 +52,7 @@ class _InputViewState extends State<InputView> {
               children: [
                 for (final color in [nBlue, nOrange, nCyan, nPink, nPink2])
                   GestureDetector(
-                    onTap: () {
-                      _selectedColor = color;
-                      setState(() {});
-                    },
+                    onTap: () => controller.getColor(color),
                     child: Container(
                       width: 40,
                       height: 40,
@@ -90,7 +60,7 @@ class _InputViewState extends State<InputView> {
                         shape: BoxShape.circle,
                         color: color,
                       ),
-                      child: _selectedColor == color
+                      child: controller.selectedColor == color
                           ? const Icon(
                               Icons.check,
                               size: 20,
@@ -103,24 +73,14 @@ class _InputViewState extends State<InputView> {
             ),
             const SizedBox(height: 30.0),
             HmSaveButton(
-              onPressed: () async {
-                String colorString = _selectedColor != null
-                    ? _selectedColor!.value.toRadixString(16)
-                    : '';
-                await dbInstance.insertData({
-                  'title': labelController.text,
-                  'content': descriptionController.text,
-                  'color': colorString,
-                  'createdAt': DateTime.now().toString(),
-                  'updatedAt': DateTime.now().toString(),
-                });
-                Navigator.pop(context);
-                setState(() {});
-              },
+              onPressed: () => controller.doSaveData(),
             ),
           ],
         ),
       ),
     );
   }
+
+  @override
+  State<InputView> createState() => InputController();
 }

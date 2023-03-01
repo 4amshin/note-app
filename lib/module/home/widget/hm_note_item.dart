@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:note_app/model/note_model.dart';
-import 'package:note_app/view/update_view.dart';
-
-import 'show_dialog.dart';
+import 'package:intl/intl.dart';
 
 class HmNoteItem extends StatelessWidget {
   final String? title;
   final String? content;
   final String? time;
-  final Color? color;
+  final String? color;
   final void Function()? onDelete;
   final void Function()? onTap;
   const HmNoteItem({
@@ -34,7 +31,8 @@ class HmNoteItem extends StatelessWidget {
           // horizontal: 2,
         ),
         decoration: BoxDecoration(
-          color: color ?? Colors.grey,
+          // Color(int.parse(data.color!, radix: 16)
+          color: Color(int.parse(color!, radix: 16)),
           borderRadius: const BorderRadius.all(
             Radius.circular(16.0),
           ),
@@ -52,7 +50,7 @@ class HmNoteItem extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 16.0,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: Colors.black,
                   ),
                 ),
               ),
@@ -77,9 +75,9 @@ class HmNoteItem extends StatelessWidget {
                     maxLines: 4,
                     overflow: TextOverflow.ellipsis,
                     content ?? "Description",
-                    style: TextStyle(
+                    style: const TextStyle(
                       height: 1.1,
-                      color: Colors.white.withOpacity(0.9),
+                      color: Colors.black,
                       fontSize: 14,
                     ),
                   ),
@@ -91,18 +89,18 @@ class HmNoteItem extends StatelessWidget {
                   ),
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: Colors.white70,
+                      color: Colors.black45,
                       width: 1,
                     ),
                     borderRadius: BorderRadius.circular(7),
                   ),
                   child: Center(
                     child: Text(
-                      time ?? "Today, 4:30",
-                      style: TextStyle(
+                      DateFormat('EEEE, HH:mm').format(DateTime.parse(time!)),
+                      style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white.withOpacity(0.8),
+                        color: Colors.black,
                       ),
                     ),
                   ),

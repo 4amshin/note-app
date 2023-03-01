@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:note_app/core.dart';
 
-import '../view/home_view.dart';
-import '../view/search_view.dart';
+import '../module/home/view/home_view.dart';
 import 'bottom_nav_v1/bottom_nav_bar.dart';
 
 class PageNavigation extends StatefulWidget {
@@ -14,7 +14,10 @@ class PageNavigation extends StatefulWidget {
 class _PageNavigationState extends State<PageNavigation> {
   int _selectedIndex = 0;
 
-  final List<Widget> _widgetOptions = const <Widget>[HomeView(), SearchView()];
+  final List<Widget> _widgetOptions = const <Widget>[
+    HomeView(),
+    ProfileView(),
+  ];
 
   @override
   Widget build(BuildContext context) {
