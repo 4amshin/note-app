@@ -92,6 +92,9 @@ class _HomeViewState extends State<HomeView> {
                                 setState(() {});
                               });
                             },
+                            onDelete: () {
+                              delete(data.id!);
+                            },
                             title: data.title,
                             content: data.content,
                             time: DateFormat('EEEE, HH:mm')

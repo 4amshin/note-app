@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:note_app/model/note_model.dart';
 import 'package:note_app/view/update_view.dart';
 
@@ -9,6 +10,7 @@ class HmNoteItem extends StatelessWidget {
   final String? content;
   final String? time;
   final Color? color;
+  final void Function()? onDelete;
   final void Function()? onTap;
   const HmNoteItem({
     Key? key,
@@ -17,6 +19,7 @@ class HmNoteItem extends StatelessWidget {
     this.time,
     this.color,
     this.onTap,
+    this.onDelete,
   }) : super(key: key);
 
   @override
@@ -28,7 +31,7 @@ class HmNoteItem extends StatelessWidget {
         width: 100,
         padding: const EdgeInsets.symmetric(
           vertical: 5,
-          horizontal: 2,
+          // horizontal: 2,
         ),
         decoration: BoxDecoration(
           color: color ?? Colors.grey,
@@ -37,15 +40,31 @@ class HmNoteItem extends StatelessWidget {
           ),
         ),
         child: ListTile(
-          title: Text(
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            title ?? "Title",
-            style: const TextStyle(
-              fontSize: 15.0,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(
+                width: 95,
+                child: Text(
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  title ?? "Title",
+                  style: const TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: onDelete,
+                child: SvgPicture.asset(
+                  'assets/icons/trash.svg',
+                  height: 15,
+                  color: Colors.white,
+                ),
+              ),
+            ],
           ),
           subtitle: Padding(
             padding: const EdgeInsets.only(bottom: 33, top: 5),
